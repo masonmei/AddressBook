@@ -1,6 +1,6 @@
 package org.personal.mason.common.code.gen.elements;
 
-import org.personal.mason.common.code.gen.StructureMetaData;
+import org.personal.mason.common.code.gen.MetaData;
 import org.personal.mason.common.code.gen.Template;
 
 /**
@@ -19,6 +19,6 @@ public abstract class FileElement extends AbstractElement implements File {
 
     public abstract Template getTemplate();
 
-    public abstract StructureMetaData getMetaData();
+    public abstract MetaData getMetaData();
 
 }

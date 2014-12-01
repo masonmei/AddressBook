@@ -17,18 +17,19 @@
 package org.personal.mason.addressbook.app.command;
 
 import org.axonframework.domain.IdentifierFactory;
+import org.personal.mason.addressbook.app.model.ContactId;
 import org.springframework.util.Assert;
 
 public class CreateContactCommand extends AbstractAddressBookCommand {
     private final String newContactName;
 
     public CreateContactCommand(String newContactName) {
-        super(IdentifierFactory.getInstance().generateIdentifier());
+        super(new ContactId());
         Assert.hasText(newContactName, "Name for new contact must contain text");
         this.newContactName = newContactName;
     }
 
-    public CreateContactCommand(String contactId, String newContactName) {
+    public CreateContactCommand(ContactId contactId, String newContactName) {
         super(contactId);
         Assert.hasText(newContactName, "Name for new contact must contain text");
         this.newContactName = newContactName;

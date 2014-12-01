@@ -17,7 +17,6 @@
 package org.personal.mason.addressbook.app.event.listener;
 
 import org.axonframework.eventhandling.annotation.EventHandler;
-
 import org.personal.mason.addressbook.app.entry.AddressEntry;
 import org.personal.mason.addressbook.app.entry.ContactEntry;
 import org.personal.mason.addressbook.app.event.*;
@@ -27,6 +26,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.List;
 
 /**
  * @author Allard Buijze
@@ -45,65 +45,54 @@ public class AddressBookEventListener {
     @EventHandler
     public void handleContactCreatedEvent(ContactCreatedEvent event) {
         ContactEntry entry = new ContactEntry();
-        entry.setIdentifier(event.getContactId());
+        entry.setIdentifier(event.getContactId().toString());
         entry.setName(event.getName());
         contactRepository.save(entry);
     }
 
     @EventHandler
     public void handleContactNameChangedEvent(ContactNameChangedEvent event) {
-        entityManager.createQuery("UPDATE ContactEntry e SET e.name = :newName WHERE e.identifier = :id")
-                     .setParameter("newName", event.getNewName())
-                     .setParameter("id", event.getContactId())
-                     .executeUpdate();
-        entityManager.createQuery("UPDATE AddressEntry e SET e.name = :newName WHERE e.identifier = :id")
-                     .setParameter("newName", event.getNewName())
-                     .setParameter("id", event.getContactId())
-                     .executeUpdate();
+        ContactEntry contactEntry = contactRepository.findByIdentifier(event.getContactId().toString());
+        List<AddressEntry> addressEntries = addressRepository.findByIdentifier(event.getContactId().toString());
+        contactEntry.setName(event.getNewName());
+        for (AddressEntry addressEntry: addressEntries){
+            addressEntry.setName(event.getNewName());
+        }
+        contactRepository.save(contactEntry);
+        addressRepository.save(addressEntries);
     }
 
     @EventHandler
     public void handleContactDeletedEvent(ContactDeletedEvent event) {
-        entityManager.createQuery("DELETE FROM AddressEntry e WHERE e.identifier = :id")
-                     .setParameter("id", event.getContactId())
-                     .executeUpdate();
-
-        entityManager.createQuery("DELETE FROM ContactEntry e WHERE e.identifier = :id")
-                     .setParameter("id", event.getContactId())
-                     .executeUpdate();
+        ContactEntry contactEntry = contactRepository.findByIdentifier(event.getContactId().toString());
+        List<AddressEntry> addressEntries = addressRepository.findByIdentifier(event.getContactId().toString());
+        addressRepository.delete(addressEntries);
+        contactRepository.delete(contactEntry);
     }
 
     @EventHandler
     public void handleAddressDeletedEvent(AddressRemovedEvent event) {
-        entityManager.createQuery("DELETE FROM AddressEntry e WHERE e.identifier = :id and e.addressType = :type")
-                     .setParameter("id", event.getContactId())
-                     .setParameter("type", event.getType())
-                     .executeUpdate();
+        List<AddressEntry> addressEntries = addressRepository.findByIdentifierAndAddressType(event.getContactId().toString(), event.getType());
+        addressRepository.delete(addressEntries);
     }
 
     @EventHandler
     public void handleAddressChangedEvent(AddressChangedEvent event) {
-        AddressEntry entry = (AddressEntry) entityManager.createQuery(
-                "FROM AddressEntry e WHERE e.identifier = :id and e.addressType = :type")
-                                                         .setParameter("id", event.getContactId())
-                                                         .setParameter("type", event.getType())
-                                                         .getSingleResult();
-
-        entry.setStreetAndNumber(event.getAddress().getStreetAndNumber());
-        entry.setZipCode(event.getAddress().getZipCode());
-        entry.setCity(event.getAddress().getCity());
-        entityManager.persist(entry);
+        List<AddressEntry> addressEntries = addressRepository.findByIdentifierAndAddressType(event.getContactId().toString(), event.getType());
+        for (AddressEntry addressEntry: addressEntries){
+            addressEntry.setStreetAndNumber(event.getAddress().getStreetAndNumber());
+            addressEntry.setZipCode(event.getAddress().getZipCode());
+            addressEntry.setCity(event.getAddress().getCity());
+        }
+        addressRepository.save(addressEntries);
     }
 
     @EventHandler
     public void handleAddressAddedEvent(AddressAddedEvent event) {
-        ContactEntry contact = (ContactEntry)
-                entityManager.createQuery("FROM ContactEntry e WHERE e.identifier = :id")
-                             .setParameter("id", event.getContactId())
-                             .getSingleResult();
+        ContactEntry contactEntry = contactRepository.findByIdentifier(event.getContactId().toString());
         AddressEntry entry = new AddressEntry();
-        entry.setIdentifier(event.getContactId());
-        entry.setName(contact.getName());
+        entry.setIdentifier(event.getContactId().toString());
+        entry.setName(contactEntry.getName());
         entry.setAddressType(event.getType());
         entry.setStreetAndNumber(event.getAddress().getStreetAndNumber());
         entry.setCity(event.getAddress().getCity());

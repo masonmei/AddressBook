@@ -16,12 +16,13 @@
 
 package org.personal.mason.addressbook.app.command;
 
+import org.personal.mason.addressbook.app.model.ContactId;
 import org.springframework.util.Assert;
 
 public class ChangeContactNameCommand extends AbstractAddressBookCommand {
     private final String contactNewName;
 
-    public ChangeContactNameCommand(String contactId, String contactNewName) {
+    public ChangeContactNameCommand(ContactId contactId, String contactNewName) {
         super(contactId);
         Assert.hasText(contactNewName, "New name for contact should contain text");
         this.contactNewName = contactNewName;

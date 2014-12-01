@@ -16,17 +16,19 @@
 
 package org.personal.mason.addressbook.app.event;
 
+import org.personal.mason.addressbook.app.model.ContactId;
+
 import java.io.Serializable;
 
 public class ContactDeletedEvent implements Serializable {
 
-    private final String contactId;
+    private final ContactId contactId;
 
-    public ContactDeletedEvent(String contactId) {
+    public ContactDeletedEvent(ContactId contactId) {
         this.contactId = contactId;
     }
 
-    public String getContactId() {
+    public ContactId getContactId() {
         return contactId;
     }
 }

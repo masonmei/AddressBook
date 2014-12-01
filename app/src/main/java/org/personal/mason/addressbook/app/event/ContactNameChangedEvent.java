@@ -16,14 +16,16 @@
 
 package org.personal.mason.addressbook.app.event;
 
+import org.personal.mason.addressbook.app.model.ContactId;
+
 import java.io.Serializable;
 
 public class ContactNameChangedEvent implements Serializable {
 
-    private final String contactId;
+    private final ContactId contactId;
     private final String newName;
 
-    public ContactNameChangedEvent(String contactId, String newName) {
+    public ContactNameChangedEvent(ContactId contactId, String newName) {
         this.contactId = contactId;
         this.newName = newName;
     }
@@ -32,7 +34,7 @@ public class ContactNameChangedEvent implements Serializable {
         return newName;
     }
 
-    public String getContactId() {
+    public ContactId getContactId() {
         return contactId;
     }
 }

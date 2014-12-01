@@ -16,13 +16,14 @@
 
 package org.personal.mason.addressbook.app.command;
 
+import org.personal.mason.addressbook.app.model.ContactId;
 import org.springframework.util.Assert;
 
 public class RemoveContactCommand extends AbstractAddressBookCommand {
 
-    public RemoveContactCommand(String contactId) {
+    public RemoveContactCommand(ContactId contactId) {
         super(contactId);
-        Assert.hasText(contactId, "Cannot remove a contact with an empty id");
+        Assert.notNull(contactId, "Cannot remove a contact with an empty id");
     }
 
 }

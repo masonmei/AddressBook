@@ -1,7 +1,6 @@
 package org.personal.mason.common.code.gen.project;
 
 import org.personal.mason.common.code.gen.module.Module;
-import org.personal.mason.common.code.gen.common.Structure;
 
 import java.util.Iterator;
 

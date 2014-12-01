@@ -5,8 +5,10 @@ import org.axonframework.commandhandling.GenericCommandMessage;
 import org.personal.mason.addressbook.app.command.*;
 import org.personal.mason.addressbook.app.entry.AddressEntry;
 import org.personal.mason.addressbook.app.entry.ContactEntry;
-import org.personal.mason.addressbook.app.query.ContactNameRepository;
-import org.personal.mason.addressbook.app.query.ContactRepository;
+import org.personal.mason.addressbook.app.model.ContactId;
+import org.personal.mason.addressbook.app.query.repository.AddressRepository;
+import org.personal.mason.addressbook.app.query.repository.ClaimedContactNameRepository;
+import org.personal.mason.addressbook.app.query.repository.ContactRepository;
 import org.personal.mason.addressbook.app.type.AddressType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,25 +38,28 @@ public class ContactsController {
     private ContactRepository repository;
 
     @Autowired
-    private ContactNameRepository contactNameRepository;
+    private ClaimedContactNameRepository contactNameRepository;
+
+    @Autowired
+    private AddressRepository addressRepository;
 
     @Autowired
     private CommandBus commandBus;
 
     @RequestMapping(method = RequestMethod.GET)
     public String list(Model model) {
-        model.addAttribute("contacts", repository.findAllContacts());
+        model.addAttribute("contacts", repository.findAll());
         return "contacts/list";
     }
 
     @RequestMapping(value = "{identifier}", method = RequestMethod.GET)
     public String details(@PathVariable String identifier, Model model) {
-        List<AddressEntry> addressesForContact = repository.findAllAddressesForContact(identifier);
+        List<AddressEntry> addressesForContact = addressRepository.findByIdentifier(identifier);
         String name;
         if (addressesForContact.size() > 0) {
             name = addressesForContact.get(0).getName();
         } else {
-            name = repository.loadContactDetails(identifier).getName();
+            name = repository.findByIdentifier(identifier).getName();
         }
         model.addAttribute("addresses", addressesForContact);
         model.addAttribute("identifier", identifier);
@@ -64,7 +69,7 @@ public class ContactsController {
 
     @RequestMapping(value = "{identifier}/edit", method = RequestMethod.GET)
     public String formEdit(@PathVariable String identifier, Model model) {
-        ContactEntry contactEntry = repository.loadContactDetails(identifier);
+        ContactEntry contactEntry = repository.findByIdentifier(identifier);
         model.addAttribute("contact", contactEntry);
         return "contacts/edit";
     }
@@ -77,7 +82,7 @@ public class ContactsController {
         }
 
         ChangeContactNameCommand command = new ChangeContactNameCommand(
-                contact.getIdentifier(),
+                new ContactId(contact.getIdentifier()),
                 contact.getName()
         );
 
@@ -117,7 +122,7 @@ public class ContactsController {
 
     @RequestMapping(value = "{identifier}/delete", method = RequestMethod.GET)
     public String formDelete(@PathVariable String identifier, Model model) {
-        ContactEntry contactEntry = repository.loadContactDetails(identifier);
+        ContactEntry contactEntry = repository.findByIdentifier(identifier);
         model.addAttribute("contact", contactEntry);
         return "contacts/delete";
     }
@@ -125,7 +130,7 @@ public class ContactsController {
     @RequestMapping(value = "{identifier}/delete", method = RequestMethod.POST)
     public String formDelete(@ModelAttribute("contact") ContactEntry contact, BindingResult bindingResult) {
         if (!bindingResult.hasErrors()) {
-            RemoveContactCommand command = new RemoveContactCommand(contact.getIdentifier());
+            RemoveContactCommand command = new RemoveContactCommand(new ContactId(contact.getIdentifier()));
             commandBus.dispatch(new GenericCommandMessage<Object>(command));
 
             return "redirect:/contacts";
@@ -136,7 +141,7 @@ public class ContactsController {
 
     @RequestMapping(value = "{identifier}/address/new", method = RequestMethod.GET)
     public String formNewAddress(@PathVariable String identifier, Model model) {
-        ContactEntry contactEntry = repository.loadContactDetails(identifier);
+        ContactEntry contactEntry = repository.findByIdentifier(identifier);
         AddressEntry addressEntry = new AddressEntry();
         addressEntry.setIdentifier(contactEntry.getIdentifier());
         addressEntry.setName(contactEntry.getName());
@@ -148,7 +153,7 @@ public class ContactsController {
     public String formNewAddressSubmit(@ModelAttribute("address") @Valid AddressEntry address, BindingResult bindingResult) {
         if (!bindingResult.hasErrors()) {
             RegisterAddressCommand command = new RegisterAddressCommand(
-                    address.getIdentifier(),
+                    new ContactId(address.getIdentifier()),
                     address.getAddressType(),
                     address.getStreetAndNumber(),
                     address.getZipCode(),
@@ -163,7 +168,7 @@ public class ContactsController {
 
     @RequestMapping(value = "{identifier}/address/delete/{addressType}", method = RequestMethod.GET)
     public String formDeleteAddress(@PathVariable String identifier, @PathVariable AddressType addressType, Model model) {
-        ContactEntry contactEntry = repository.loadContactDetails(identifier);
+        ContactEntry contactEntry = repository.findByIdentifier(identifier);
         AddressEntry addressEntry = new AddressEntry();
         addressEntry.setIdentifier(contactEntry.getIdentifier());
         addressEntry.setName(contactEntry.getName());
@@ -177,7 +182,7 @@ public class ContactsController {
     public String formDeleteAddressSubmit(@ModelAttribute("address") AddressEntry address, BindingResult bindingResult) {
         if (!bindingResult.hasErrors()) {
             RemoveAddressCommand command = new RemoveAddressCommand(
-                    address.getIdentifier(),
+                    new ContactId(address.getIdentifier()),
                     address.getAddressType()
             );
             commandBus.dispatch(new GenericCommandMessage<Object>(command));
@@ -195,7 +200,7 @@ public class ContactsController {
      * @return true if the contact has errors, false otherwise
      */
     private boolean contactHasErrors(ContactEntry contact, BindingResult bindingResult) {
-        if (bindingResult.hasErrors() || !contactNameRepository.vacantContactName(contact.getName())) {
+        if (bindingResult.hasErrors() || contactNameRepository.findOne(contact.getName()) != null) {
             ObjectError error = new FieldError("contact", "name",
                     "The provided name \'" + contact.getName() + "\' already exists");
             bindingResult.addError(error);

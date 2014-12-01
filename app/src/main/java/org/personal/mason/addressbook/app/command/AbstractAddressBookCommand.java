@@ -1,17 +1,19 @@
 package org.personal.mason.addressbook.app.command;
 
+import org.personal.mason.addressbook.app.model.ContactId;
+
 /**
  * Created by mason on 11/25/14.
  */
 public abstract class AbstractAddressBookCommand {
 
-    private final String contactId;
+    private final ContactId contactId;
 
-    public AbstractAddressBookCommand(String contactId) {
+    public AbstractAddressBookCommand(ContactId contactId) {
         this.contactId = contactId;
     }
 
-    public String getContactId() {
+    public ContactId getContactId() {
         return contactId;
     }
 }

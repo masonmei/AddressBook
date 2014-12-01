@@ -2,9 +2,9 @@ package org.personal.mason.addressbook.app;
 
 import org.axonframework.commandhandling.CommandBus;
 import org.axonframework.commandhandling.GenericCommandMessage;
-import org.axonframework.domain.IdentifierFactory;
 import org.personal.mason.addressbook.app.command.CreateContactCommand;
 import org.personal.mason.addressbook.app.command.RegisterAddressCommand;
+import org.personal.mason.addressbook.app.model.ContactId;
 import org.personal.mason.addressbook.app.type.AddressType;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
@@ -34,14 +34,14 @@ public class ContactGenerator implements ApplicationListener {
 
     public void initializeData() {
         if (initialized.compareAndSet(false, true)) {
-            String allardContactId = IdentifierFactory.getInstance().generateIdentifier();
+            ContactId allardContactId = new ContactId();
             CreateContactCommand commandAllard = new CreateContactCommand(
                     allardContactId,
                     "Allard"
             );
             commandBus.dispatch(new GenericCommandMessage<Object>(commandAllard));
 
-            String jettroContactId = IdentifierFactory.getInstance().generateIdentifier();
+            ContactId jettroContactId = new ContactId();
             CreateContactCommand commandJettro = new CreateContactCommand(
                     jettroContactId,
                     "Jettro"

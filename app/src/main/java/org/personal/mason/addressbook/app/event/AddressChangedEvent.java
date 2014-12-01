@@ -17,12 +17,13 @@
 package org.personal.mason.addressbook.app.event;
 
 import org.personal.mason.addressbook.app.model.Address;
+import org.personal.mason.addressbook.app.model.ContactId;
 import org.personal.mason.addressbook.app.type.AddressType;
 
 
 public class AddressChangedEvent extends AbstractAddressBookEvent {
 
-    public AddressChangedEvent(String contactId, AddressType type, Address address) {
+    public AddressChangedEvent(ContactId contactId, AddressType type, Address address) {
         super(contactId, type, address);
     }
 }

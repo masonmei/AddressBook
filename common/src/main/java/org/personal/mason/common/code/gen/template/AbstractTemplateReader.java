@@ -1,0 +1,14 @@
+package org.personal.mason.common.code.gen.template;
+
+/**
+ * Created by mason on 2014-12-01.
+ */
+public abstract class AbstractTemplateReader<T> implements TemplateReader<T> {
+
+    @Override
+    public T read() {
+
+        return null;
+    }
+}
+

@@ -17,6 +17,7 @@
 package org.personal.mason.addressbook.app.event;
 
 import org.personal.mason.addressbook.app.model.Address;
+import org.personal.mason.addressbook.app.model.ContactId;
 import org.personal.mason.addressbook.app.type.AddressType;
 
 /**
@@ -24,7 +25,7 @@ import org.personal.mason.addressbook.app.type.AddressType;
  */
 public class AddressAddedEvent extends AbstractAddressBookEvent {
 
-    public AddressAddedEvent(String contactId, AddressType type, Address address) {
+    public AddressAddedEvent(ContactId contactId, AddressType type, Address address) {
         super(contactId, type, address);
     }
 }

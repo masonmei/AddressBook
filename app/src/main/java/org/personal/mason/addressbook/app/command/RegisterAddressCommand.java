@@ -1,5 +1,6 @@
 package org.personal.mason.addressbook.app.command;
 
+import org.personal.mason.addressbook.app.model.ContactId;
 import org.personal.mason.addressbook.app.type.AddressType;
 import org.springframework.util.Assert;
 
@@ -12,7 +13,7 @@ public class RegisterAddressCommand extends AbstractAddressBookCommand {
     private final String zipCode;
     private final String city;
 
-    public RegisterAddressCommand(String contactId, AddressType addressType, String streetAndNumber, String zipCode, String city) {
+    public RegisterAddressCommand(ContactId contactId, AddressType addressType, String streetAndNumber, String zipCode, String city) {
         super(contactId);
         Assert.notNull(addressType, "An Address type must be provided.");
         this.addressType = addressType;

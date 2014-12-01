@@ -16,13 +16,14 @@
 
 package org.personal.mason.addressbook.app.command;
 
+import org.personal.mason.addressbook.app.model.ContactId;
 import org.personal.mason.addressbook.app.type.AddressType;
 import org.springframework.util.Assert;
 
 public class RemoveAddressCommand extends AbstractAddressBookCommand {
     private final AddressType addressType;
 
-    public RemoveAddressCommand(String contactId, AddressType addressType) {
+    public RemoveAddressCommand(ContactId contactId, AddressType addressType) {
         super(contactId);
         Assert.notNull(addressType, "The address type cannot be null");
         this.addressType = addressType;

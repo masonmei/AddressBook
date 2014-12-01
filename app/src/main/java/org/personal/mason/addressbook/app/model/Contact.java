@@ -10,9 +10,9 @@ import java.util.Map;
 
 public class Contact extends AbstractAnnotatedAggregateRoot {
     private Map<AddressType, Address> addresses = new HashMap<AddressType, Address>();
-    private String id;
+    private ContactId id;
 
-    public Contact(String identifier, String name) {
+    public Contact(ContactId identifier, String name) {
         apply(new ContactCreatedEvent(identifier, name));
     }
 

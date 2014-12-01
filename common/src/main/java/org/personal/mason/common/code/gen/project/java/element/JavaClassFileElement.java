@@ -1,6 +1,6 @@
 package org.personal.mason.common.code.gen.project.java.element;
 
-import org.personal.mason.common.code.gen.StructureMetaData;
+import org.personal.mason.common.code.gen.MetaData;
 import org.personal.mason.common.code.gen.Template;
 
 /**
@@ -18,7 +18,7 @@ public class JavaClassFileElement extends JavaFileElement {
     }
 
     @Override
-    public StructureMetaData getMetaData() {
+    public MetaData getMetaData() {
         return null;
     }
 }

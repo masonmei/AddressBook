@@ -16,16 +16,17 @@
 
 package org.personal.mason.addressbook.app.event;
 
+import org.personal.mason.addressbook.app.model.ContactId;
 import org.personal.mason.addressbook.app.type.AddressType;
 
 import java.io.Serializable;
 
 public class AddressRemovedEvent implements Serializable {
 
-    private final String contactId;
+    private final ContactId contactId;
     private final AddressType type;
 
-    public AddressRemovedEvent(String contactId, AddressType type) {
+    public AddressRemovedEvent(ContactId contactId, AddressType type) {
         this.contactId = contactId;
         this.type = type;
     }
@@ -34,7 +35,7 @@ public class AddressRemovedEvent implements Serializable {
         return type;
     }
 
-    public String getContactId() {
+    public ContactId getContactId() {
         return contactId;
     }
 }

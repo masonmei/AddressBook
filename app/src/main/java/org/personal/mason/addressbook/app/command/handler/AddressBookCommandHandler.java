@@ -21,17 +21,17 @@ import org.axonframework.repository.Repository;
 import org.axonframework.unitofwork.UnitOfWork;
 import org.axonframework.unitofwork.UnitOfWorkListenerAdapter;
 import org.personal.mason.addressbook.app.command.*;
+import org.personal.mason.addressbook.app.entry.ClaimedContactName;
 import org.personal.mason.addressbook.app.entry.ContactEntry;
 import org.personal.mason.addressbook.app.exception.ContactNameAlreadyTakenException;
 import org.personal.mason.addressbook.app.model.Address;
 import org.personal.mason.addressbook.app.model.Contact;
-import org.personal.mason.addressbook.app.query.ContactNameRepository;
-import org.personal.mason.addressbook.app.query.ContactRepository;
+import org.personal.mason.addressbook.app.model.ContactId;
+import org.personal.mason.addressbook.app.query.repository.ClaimedContactNameRepository;
+import org.personal.mason.addressbook.app.query.repository.ContactRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
-
-import java.util.UUID;
 
 /**
  * <p>Command handler that can be used to create and update Contacts. It can also be used to register and remove
@@ -44,7 +44,7 @@ public class AddressBookCommandHandler {
 
     private final static Logger logger = LoggerFactory.getLogger(AddressBookCommandHandler.class);
     private Repository<Contact> repository;
-    private ContactNameRepository contactNameRepository;
+    private ClaimedContactNameRepository contactNameRepository;
     private ContactRepository contactRepository;
 
     /**
@@ -61,7 +61,7 @@ public class AddressBookCommandHandler {
      *
      * @param contactNameRepository the contact name repository
      */
-    public void setContactNameRepository(ContactNameRepository contactNameRepository) {
+    public void setContactNameRepository(ClaimedContactNameRepository contactNameRepository) {
         this.contactNameRepository = contactNameRepository;
     }
 
@@ -92,15 +92,16 @@ public class AddressBookCommandHandler {
         logger.debug("Received a command for a new contact with name : {}", command.getNewContactName());
         Assert.notNull(command.getNewContactName(), "Name may not be null");
 
-        if (contactNameRepository.claimContactName(command.getNewContactName())) {
+        try{
+            contactNameRepository.save(new ClaimedContactName(command.getNewContactName()));
             registerUnitOfWorkListenerToCancelClaimingName(command.getNewContactName(), unitOfWork);
-            String contactId = command.getContactId();
+            ContactId contactId = command.getContactId();
             if (contactId == null) {
-                contactId = UUID.randomUUID().toString();
+                contactId = new ContactId();
             }
             Contact contact = new Contact(contactId, command.getNewContactName());
             repository.add(contact);
-        } else {
+        } catch (RuntimeException e) {
             throw new ContactNameAlreadyTakenException(command.getNewContactName());
         }
     }
@@ -117,13 +118,15 @@ public class AddressBookCommandHandler {
     public void handle(final ChangeContactNameCommand command, UnitOfWork unitOfWork) {
         Assert.notNull(command.getContactId(), "ContactIdentifier may not be null");
         Assert.notNull(command.getContactNewName(), "Name may not be null");
-        if (contactNameRepository.claimContactName(command.getContactNewName())) {
+
+        try{
+            contactNameRepository.save(new ClaimedContactName(command.getContactNewName()));
             registerUnitOfWorkListenerToCancelClaimingName(command.getContactNewName(), unitOfWork);
             Contact contact = repository.load(command.getContactId());
             contact.changeName(command.getContactNewName());
 
             cancelClaimedContactName(command.getContactId(), unitOfWork);
-        } else {
+        } catch (RuntimeException e) {
             throw new ContactNameAlreadyTakenException(command.getContactNewName());
         }
     }
@@ -174,13 +177,13 @@ public class AddressBookCommandHandler {
         contact.removeAddress(command.getAddressType());
     }
 
-    private void cancelClaimedContactName(String contactIdentifier, UnitOfWork unitOfWork) {
-        final ContactEntry contactEntry = contactRepository.loadContactDetails(contactIdentifier);
+    private void cancelClaimedContactName(ContactId contactIdentifier, UnitOfWork unitOfWork) {
+        final ContactEntry contactEntry = contactRepository.findByIdentifier(contactIdentifier.toString());
         unitOfWork.registerListener(new UnitOfWorkListenerAdapter() {
             @Override
             public void afterCommit(UnitOfWork uow) {
                 logger.debug("About to cancel the name {}", contactEntry.getName());
-                contactNameRepository.cancelContactName(contactEntry.getName());
+                contactNameRepository.delete(contactEntry.getName());
             }
         });
     }
@@ -189,7 +192,7 @@ public class AddressBookCommandHandler {
         unitOfWork.registerListener(new UnitOfWorkListenerAdapter() {
             @Override
             public void onRollback(UnitOfWork uow, Throwable failureCause) {
-                contactNameRepository.cancelContactName(name);
+                contactNameRepository.delete(name);
             }
         });
     }

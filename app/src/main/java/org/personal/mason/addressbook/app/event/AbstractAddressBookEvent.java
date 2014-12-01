@@ -1,6 +1,7 @@
 package org.personal.mason.addressbook.app.event;
 
 import org.personal.mason.addressbook.app.model.Address;
+import org.personal.mason.addressbook.app.model.ContactId;
 import org.personal.mason.addressbook.app.type.AddressType;
 
 import java.io.Serializable;
@@ -10,11 +11,11 @@ import java.io.Serializable;
  */
 public abstract class AbstractAddressBookEvent implements Serializable {
 
-    private final String contactId;
+    private final ContactId contactId;
     private final AddressType type;
     private final Address address;
 
-    protected AbstractAddressBookEvent(String contactId, AddressType type, Address address) {
+    protected AbstractAddressBookEvent(ContactId contactId, AddressType type, Address address) {
         this.contactId = contactId;
         this.type = type;
         this.address = address;
@@ -28,7 +29,7 @@ public abstract class AbstractAddressBookEvent implements Serializable {
         return address;
     }
 
-    public String getContactId() {
+    public ContactId getContactId() {
         return contactId;
     }
 }
