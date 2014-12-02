@@ -1,8 +1,11 @@
 package org.personal.mason.common.code.gen.template.java;
 
+import org.apache.commons.beanutils.PropertyUtils;
+import org.apache.commons.beanutils.PropertyUtilsBean;
 import org.apache.commons.io.IOUtils;
 import org.personal.mason.common.code.gen.template.Template;
 
+import java.beans.PropertyDescriptor;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -43,5 +46,12 @@ public abstract class AbstractJava implements Template {
         return getClass().getName().replaceAll("\\.", "/") + ".tm";
     }
 
+    protected void setTemplateAttributes() {
+        PropertyDescriptor[] propertyDescriptors = PropertyUtils.getPropertyDescriptors(getClass());
+        for (PropertyDescriptor descriptor : propertyDescriptors) {
+            String name = descriptor.getName();
+
+        }
+    }
 }
 

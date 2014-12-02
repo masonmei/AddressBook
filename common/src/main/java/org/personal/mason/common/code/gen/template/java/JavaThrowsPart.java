@@ -9,5 +9,3 @@ public class JavaThrowsPart extends AbstractJavaFilePart {
         return null;
     }
 }
-
-============================================================
