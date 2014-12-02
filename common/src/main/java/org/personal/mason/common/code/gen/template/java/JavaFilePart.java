@@ -8,4 +8,3 @@ import org.personal.mason.common.code.gen.template.FilePartTemplate;
 public interface JavaFilePart extends FilePartTemplate {
 
 }
-

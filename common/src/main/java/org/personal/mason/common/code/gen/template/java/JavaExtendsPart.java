@@ -1,10 +1,9 @@
 package org.personal.mason.common.code.gen.template.java;
 
 /**
- * Created by mason on 2014-12-01.
+ * Created by m00290368 on 2014-12-02.
  */
-public class JavaMethodPart extends AbstractJavaFilePart {
-
+public class JavaExtendsPart extends AbstractJavaFilePart {
     @Override
     public String build() {
         return null;

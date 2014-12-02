@@ -10,4 +10,3 @@ public class JavaFieldPart extends AbstractJavaFilePart {
         return null;
     }
 }
-
