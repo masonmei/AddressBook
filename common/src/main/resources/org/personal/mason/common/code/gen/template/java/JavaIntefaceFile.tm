@@ -5,7 +5,7 @@
 #JavaImportsPart#
 
 ##comment
-public interface ##className #JavaExtendsPart# {
+interface ##className #JavaExtendsPart# {
 
     #JavaFieldsPart#
 

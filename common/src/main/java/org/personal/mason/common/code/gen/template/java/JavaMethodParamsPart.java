@@ -5,7 +5,7 @@ package org.personal.mason.common.code.gen.template.java;
  */
 public class JavaMethodParamsPart extends AbstractJavaFilePart {
     @Override
-    public String build() {
+     public String build() {
         return null;
     }
 }

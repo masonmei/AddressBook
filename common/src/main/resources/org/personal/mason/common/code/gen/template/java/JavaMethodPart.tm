@@ -1,7 +1,7 @@
 #JavaImportPart#
 
 ##comment
-##visitPrivilege ##isStatic ##isFinal ##returnType ##methodName (##methodParam) {
-    #MethodLogicalPart#
+##visitPrivilege ##isStatic ##isFinal ##returnType ##methodName (#JavaMethodParamsPart#) #JavaThrowsPart# {
+    #JavaMethodLogicalPart#
     ##methodReturn;
 }

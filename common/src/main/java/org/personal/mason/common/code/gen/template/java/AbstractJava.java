@@ -1,13 +1,12 @@
 package org.personal.mason.common.code.gen.template.java;
 
-import org.apache.commons.beanutils.PropertyUtils;
-import org.apache.commons.beanutils.PropertyUtilsBean;
 import org.apache.commons.io.IOUtils;
 import org.personal.mason.common.code.gen.template.Template;
+import org.personal.mason.common.code.util.ReflectionUtils;
 
-import java.beans.PropertyDescriptor;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Field;
 
 /**
  * Created by mason on 2014-12-01.
@@ -15,6 +14,7 @@ import java.io.InputStream;
 public abstract class AbstractJava implements Template {
 
     private final String template;
+    private final StringBuilder contentBuilder;
 
     public AbstractJava() {
         this(null);
@@ -26,6 +26,7 @@ public abstract class AbstractJava implements Template {
         } else {
             this.template = resolveTemplate(templateFileName);
         }
+        this.contentBuilder = new StringBuilder(this.template);
     }
 
     @Override
@@ -46,11 +47,11 @@ public abstract class AbstractJava implements Template {
         return getClass().getName().replaceAll("\\.", "/") + ".tm";
     }
 
-    protected void setTemplateAttributes() {
-        PropertyDescriptor[] propertyDescriptors = PropertyUtils.getPropertyDescriptors(getClass());
-        for (PropertyDescriptor descriptor : propertyDescriptors) {
-            String name = descriptor.getName();
-
+    protected void processFields() {
+        Iterable<Field> declaredFields = ReflectionUtils.fieldsOf(getClass());
+        for (Field field : declaredFields) {
+            Object fieldValue = ReflectionUtils.getFieldValue(field, this);
+//            contentBuilder.
         }
     }
 }

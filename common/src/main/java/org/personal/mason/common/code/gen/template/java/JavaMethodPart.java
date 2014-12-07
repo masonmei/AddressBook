@@ -10,3 +10,4 @@ public class JavaMethodPart extends AbstractJavaFilePart {
         return null;
     }
 }
+

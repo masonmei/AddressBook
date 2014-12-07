@@ -1,7 +1,4 @@
-#JavaImportPart#
+#JavaImportsPart#
 
 ##comment
-abstract ##returnType ##methodName (##methodParam) #JavaThrowsPart# {
-    #MethodLogicalPart#
-    ##methodReturn;
-}
+abstract ##returnType ##methodName (#JavaMethodParamsPart#) #JavaThrowsPart#;

@@ -1,4 +1,4 @@
 #JavaImportPart#
 
 ##comment
-##visitPrivilege ##isStatic ##isFinal ##fieldType ##fieldName;
+##visitPrivilege ##isStatic ##isFinal ##fieldType ##fieldName #JavaInitialPart#;

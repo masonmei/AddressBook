@@ -5,8 +5,14 @@ package org.personal.mason.common.code.gen.template.java;
  */
 public class JavaImportPart extends AbstractJavaFilePart {
 
-    public JavaImportPart() {
-        super();
+    private final String className;
+
+    public JavaImportPart(String className) {
+        this.className = className;
+    }
+
+    public String getClassName() {
+        return className;
     }
 
     @Override

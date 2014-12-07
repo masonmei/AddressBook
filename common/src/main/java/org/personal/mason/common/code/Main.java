@@ -11,8 +11,8 @@ import java.io.IOException;
  * Created by mason on 12/1/14.
  */
 public class Main {
-    private static final String NAME_SPILITOR = "[\n]+----------------[\n]+";
-    private static final String FILE_SPILITOR = "[\n]+============================================================[\n]+";
+    private static final String NAME_SPILITOR = "----------------";
+    private static final String FILE_SPILITOR = "============================================================";
 
     public static void main(String[] args) throws IOException {
         String string = IOUtils.toString(new FileInputStream("/Volumes/BACKUP/Mac/SCM/AddressBook/common/target/temp.txt"));
