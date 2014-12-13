@@ -21,7 +21,7 @@ public interface Element {
 
     /**
      * Construct this element in the parent folder.
-     *
+     * <p/>
      * If this is an folder element, recursive create the sub elements.
      */
     void construct();

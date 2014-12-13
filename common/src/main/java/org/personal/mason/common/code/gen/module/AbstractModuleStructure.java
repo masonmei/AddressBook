@@ -13,7 +13,7 @@ import java.util.Set;
 /**
  * Created by m00290368 on 2014-11-27.
  */
-public abstract class AbstractModuleStructure<T>  implements ModuleStructure<T> {
+public abstract class AbstractModuleStructure<T> implements ModuleStructure<T> {
 
     private final String name;
     private final Structure parent;

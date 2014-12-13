@@ -20,9 +20,8 @@ public class JavaImportsPart extends AbstractJavaFilePart implements JavaMultipl
         this.importParts = importParts;
     }
 
-    @Override
-    public String build() {
-        return null;
+    public List<JavaImportPart> getImportParts() {
+        return importParts;
     }
 
     @Override
@@ -32,8 +31,19 @@ public class JavaImportsPart extends AbstractJavaFilePart implements JavaMultipl
 
     @Override
     public void addParts(JavaImportPart... parts) {
-        if(parts != null) {
-            Collections.addAll(importParts, parts);
+        if (parts.length <= 0) {
+            return;
         }
+
+        for (JavaImportPart part : parts) {
+            if (!importParts.contains(part)) {
+                importParts.add(part);
+            }
+        }
+    }
+
+    @Override
+    public Set<JavaImportPart> getImports() {
+        return Collections.emptySet();
     }
 }

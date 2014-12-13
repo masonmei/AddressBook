@@ -14,10 +14,10 @@ public abstract class AbstractProject implements Project {
     private final Set<Module> modules;
 
     public AbstractProject(String projectPath) {
-         this(Collections.emptySet());
+        this(Collections.emptySet());
     }
 
-    public AbstractProject(Set<Module> modules){
+    public AbstractProject(Set<Module> modules) {
         Assert.notNull(modules, "Project modules cannot be null.");
         this.modules = modules;
     }

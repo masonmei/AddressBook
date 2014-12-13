@@ -7,8 +7,6 @@ import java.util.Set;
  * Created by mason on 11/30/14.
  */
 public interface Containable<T> {
-
-
     /**
      * Get the Current Directory in file system.
      *

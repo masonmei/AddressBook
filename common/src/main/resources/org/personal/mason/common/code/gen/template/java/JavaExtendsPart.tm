@@ -1,3 +1,1 @@
-#JavaImportPart#
-
-extends #JavaCommaSpilitList#
+extends #JavaCommaSplitPart#

@@ -23,4 +23,18 @@ public class Main {
             FileUtils.writeStringToFile(outputFile, strings[1]);
         }
     }
+
+    private static final String OUTPUT_BASE = "/Volumes/BACKUP/Mac/SCM/AddressBook/common/target/output/";
+    private static final String FILE = "/Volumes/BACKUP/Mac/SCM/AddressBook/common/target/temp.txt";
+
+    public static void readFromFile() throws IOException {
+        String string = IOUtils.toString(new FileInputStream(FILE));
+        String[] split = string.split(FILE_SPILITOR);
+        for (String str : split) {
+            String[] strings = str.split(NAME_SPILITOR, 2);
+//            int indexOf = strings[0].lastIndexOf("/");
+            File outputFile = new File(OUTPUT_BASE + strings[0]);
+            FileUtils.writeStringToFile(outputFile, strings[1]);
+        }
+    }
 }

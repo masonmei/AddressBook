@@ -7,8 +7,8 @@ import java.util.*;
 /**
  * Created by m00290368 on 2014-12-02.
  */
-public class JavaAbstractMethodsPart extends AbstractJavaFilePart implements JavaMultiplePart<JavaAbstractMethodPart>{
-    private final List<JavaAbstractMethodPart> abstractMethodParts;
+public class JavaAbstractMethodsPart extends AbstractJavaFilePart implements JavaMultiplePart<JavaAbstractMethodPart> {
+    private final List<JavaAbstractMethodPart> abstractMethodParts = new ArrayList<JavaAbstractMethodPart>();
 
     public JavaAbstractMethodsPart() {
         this(new ArrayList<JavaAbstractMethodPart>());
@@ -16,12 +16,7 @@ public class JavaAbstractMethodsPart extends AbstractJavaFilePart implements Jav
 
     public JavaAbstractMethodsPart(List<JavaAbstractMethodPart> abstractMethodParts) {
         Assert.notNull(abstractMethodParts, "Java Abstract Methods Part must not be null.");
-        this.abstractMethodParts = abstractMethodParts;
-    }
-
-    @Override
-    public String build() {
-        return null;
+        addParts(abstractMethodParts.toArray(new JavaAbstractMethodPart[abstractMethodParts.size()]));
     }
 
     @Override
@@ -31,14 +26,24 @@ public class JavaAbstractMethodsPart extends AbstractJavaFilePart implements Jav
 
     @Override
     public void addParts(JavaAbstractMethodPart... parts) {
-        if(parts != null) {
-            Collections.addAll(abstractMethodParts, parts);
+        if (parts.length <= 0) {
+            return;
+        }
+
+        for (JavaAbstractMethodPart part : parts) {
+            if (!abstractMethodParts.contains(part)) {
+                abstractMethodParts.add(part);
+            }
         }
     }
 
+    public List<JavaAbstractMethodPart> getAbstractMethodParts() {
+        return abstractMethodParts;
+    }
+
     @Override
-    public Set<String> getImports() {
-        Set<String> imports = new HashSet<String>();
+    public Set<JavaImportPart> getImports() {
+        Set<JavaImportPart> imports = new HashSet<JavaImportPart>();
         for (JavaAbstractMethodPart abstractMethodPart : abstractMethodParts) {
             imports.addAll(abstractMethodPart.getImports());
         }

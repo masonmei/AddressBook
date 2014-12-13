@@ -1,38 +1,38 @@
 package org.personal.mason.common.code.gen.template.java;
 
-import org.personal.mason.common.code.util.Assert;
+import org.personal.mason.common.code.util.Reformatter;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.Set;
 
 /**
  * Created by mason on 2014-12-01.
  */
 public abstract class AbstractJavaFile extends AbstractJava implements JavaFile {
 
-    private final List<JavaFilePart> javaFileParts;
-
     public AbstractJavaFile() {
-        this(new ArrayList<JavaFilePart>(), null);
+        this(null);
     }
 
-    public AbstractJavaFile(List<JavaFilePart> javaFileParts, String templateFileName) {
+    public AbstractJavaFile(String templateFileName) {
         super(templateFileName);
-        Assert.notNull(javaFileParts, "Java File Parts must not be null.");
-        this.javaFileParts = javaFileParts;
     }
 
     @Override
-    public List<JavaFilePart> getFileParts() {
-        return Collections.unmodifiableList(javaFileParts);
+    public String build() {
+        collectImports();
+
+        processFields();
+
+        return Reformatter.fixup(templateBuilder.toString());
     }
 
-    @Override
-    public void addFilePart(JavaFilePart... filePartTemplate) {
-        if (filePartTemplate != null) {
-            javaFileParts.addAll(Arrays.asList(filePartTemplate));
+    protected abstract void collectImports();
+
+    protected abstract JavaImportsPart getImportsPart();
+
+    protected void collectJavaFilePartImports(Set<JavaImportPart> imports) {
+        if (imports.size() > 0) {
+            getImportsPart().addParts(imports.toArray(new JavaImportPart[imports.size()]));
         }
     }
 

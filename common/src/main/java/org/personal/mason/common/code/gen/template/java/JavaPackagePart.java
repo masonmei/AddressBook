@@ -1,5 +1,8 @@
 package org.personal.mason.common.code.gen.template.java;
 
+import java.util.Collections;
+import java.util.Set;
+
 /**
  * Created by m00290368 on 2014-12-05.
  */
@@ -11,8 +14,12 @@ public class JavaPackagePart extends AbstractJavaFilePart {
         this.packageName = packageName;
     }
 
+    public String getPackageName() {
+        return packageName;
+    }
+
     @Override
-    public String build() {
-        return null;
+    public Set<JavaImportPart> getImports() {
+        return Collections.emptySet();
     }
 }

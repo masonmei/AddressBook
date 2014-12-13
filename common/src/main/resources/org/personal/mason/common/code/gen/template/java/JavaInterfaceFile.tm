@@ -1,5 +1,4 @@
 #CopyrightPart#
-
 #JavaPackagePart#
 
 #JavaImportsPart#
@@ -7,7 +6,7 @@
 ##comment
 interface ##className #JavaExtendsPart# {
 
-    #JavaFieldsPart#
+#JavaFieldsPart#
 
-    #JavaMethodsPart#
+#JavaAbstractMethodsPart#
 }

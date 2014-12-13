@@ -16,7 +16,7 @@ public abstract class AbstractMultipleModulesModuleStructure<T> extends Abstract
     public AbstractMultipleModulesModuleStructure(String name, Structure parent, Set<ModuleStructure> moduleStructures) {
         super(name, parent);
 
-        if(moduleStructures == null) {
+        if (moduleStructures == null) {
             this.moduleStructures = Collections.emptySet();
         } else {
             this.moduleStructures = moduleStructures;

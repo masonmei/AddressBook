@@ -1,4 +1,3 @@
-#JavaImportsPart#
 
 ##Each##
 #JavaAbstractMethodPart#

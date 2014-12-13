@@ -17,8 +17,7 @@ public abstract class AbstractMultipleModuleProjectStructure<T> extends Abstract
 
     public AbstractMultipleModuleProjectStructure(String name, String description, File path, Set<ModuleStructure> moduleStructures) {
         super(name, description, path);
-        if(moduleStructures == null)
-        {
+        if (moduleStructures == null) {
             this.moduleStructures = new HashSet<>();
         } else {
             this.moduleStructures = moduleStructures;

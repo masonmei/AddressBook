@@ -1,15 +1,16 @@
 #CopyrightPart#
-
 #JavaPackagePart#
 
 #JavaImportsPart#
 
 ##comment
-##visitPrivilege ##isStatic ##isFinal class ##className #JavaExtendsPart# #JavaImplementsPart# {
+##visitPrivilege ##isAbstract ##isStatic ##isFinal class ##className #JavaExtendsPart# #JavaImplementsPart# {
 
-    #JavaFieldsPart#
+#JavaFieldsPart#
 
-    #JavaConstructorsPart#
+#JavaConstructorsPart#
 
-    #JavaMethodsPart#
+#JavaAbstractMethodsPart#
+
+#JavaMethodsPart#
 }

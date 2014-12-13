@@ -66,7 +66,7 @@ public abstract class Assert {
     }
 
     private static boolean hasLengths(String text) {
-        return  text != null && text.trim().length() > 0;
+        return text != null && text.trim().length() > 0;
     }
 
     public static void hasLength(String text, String message) {
@@ -103,13 +103,13 @@ public abstract class Assert {
     }
 
     public static void pathExist(File pathFile, String message) {
-        if(!pathFile.exists()){
+        if (!pathFile.exists()) {
             throw new IllegalStateException(message);
         }
     }
 
     public static void pathNotExists(File file, String message) {
-        if(file.exists()) {
+        if (file.exists()) {
             throw new IllegalStateException(message);
         }
     }

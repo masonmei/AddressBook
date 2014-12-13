@@ -1,3 +1,1 @@
-#JavaImportsPart#
-
-throws #JavaCommaSpilitList#
+throws #JavaCommaSplitPart#

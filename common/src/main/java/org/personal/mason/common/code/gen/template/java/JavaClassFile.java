@@ -3,7 +3,6 @@ package org.personal.mason.common.code.gen.template.java;
 
 import org.personal.mason.common.code.gen.template.java.enums.IsAbstract;
 import org.personal.mason.common.code.gen.template.java.enums.IsFinal;
-import org.personal.mason.common.code.gen.template.java.enums.IsStatic;
 import org.personal.mason.common.code.gen.template.java.enums.VisitPrivilege;
 import org.personal.mason.common.code.util.Assert;
 
@@ -20,7 +19,6 @@ public class JavaClassFile extends AbstractJavaFile implements JavaFile {
 
     private final String comment;
     private final VisitPrivilege visitPrivilege;
-    private final IsStatic isStatic;
     private final IsFinal isFinal;
     private final IsAbstract isAbstract;
     private final String className;
@@ -33,8 +31,8 @@ public class JavaClassFile extends AbstractJavaFile implements JavaFile {
 
     public JavaClassFile(CopyrightPart copyrightPart, JavaPackagePart packagePart, JavaImportsPart importsPart,
                          JavaExtendsPart extendsPart, JavaImplementsPart implementsPart, String comment,
-                         VisitPrivilege visitPrivilege, IsStatic isStatic, IsFinal isFinal, IsAbstract isAbstract,
-                         String className, JavaFieldsPart fieldsPart, JavaConstructorsPart constructorsPart,
+                         VisitPrivilege visitPrivilege, IsFinal isFinal, IsAbstract isAbstract, String className,
+                         JavaFieldsPart fieldsPart, JavaConstructorsPart constructorsPart,
                          JavaAbstractMethodsPart abstractMethodsPart, JavaMethodsPart methodsPart) {
         Assert.notNull(copyrightPart, "Copyright Part must not be null.");
         Assert.notNull(packagePart, "Java Package Part must not be null.");
@@ -47,31 +45,25 @@ public class JavaClassFile extends AbstractJavaFile implements JavaFile {
         Assert.notNull(methodsPart, "Java Methods Part must not be null.");
 
         Assert.hasLength(className, "Java Class Name must have length.");
-        if(comment == null) {
+        if (comment == null) {
             comment = "";
         }
 
-        if(visitPrivilege == null) {
+        if (visitPrivilege == null) {
             visitPrivilege = VisitPrivilege.DEFAULT;
         }
 
-        if(isAbstract == null) {
+        if (isAbstract == null) {
             isAbstract = IsAbstract.DEFAULT;
         }
 
-        if(isFinal == null) {
+        if (isFinal == null) {
             isFinal = IsFinal.DEFAULT;
         }
 
-        if(isStatic == null) {
-            isStatic = IsStatic.DEFAULT;
-        }
-
-        if(isAbstract != IsAbstract.DEFAULT) {
+        if (isAbstract != IsAbstract.DEFAULT) {
             isFinal = IsFinal.DEFAULT;
-            isStatic = IsStatic.DEFAULT;
         }
-
 
         this.copyrightPart = copyrightPart;
         this.packagePart = packagePart;
@@ -80,7 +72,6 @@ public class JavaClassFile extends AbstractJavaFile implements JavaFile {
         this.implementsPart = implementsPart;
         this.comment = comment;
         this.visitPrivilege = visitPrivilege;
-        this.isStatic = isStatic;
         this.isFinal = isFinal;
         this.isAbstract = isAbstract;
         this.className = className;
@@ -118,10 +109,6 @@ public class JavaClassFile extends AbstractJavaFile implements JavaFile {
         return visitPrivilege;
     }
 
-    public IsStatic getIsStatic() {
-        return isStatic;
-    }
-
     public IsFinal getIsFinal() {
         return isFinal;
     }
@@ -150,9 +137,59 @@ public class JavaClassFile extends AbstractJavaFile implements JavaFile {
         return methodsPart;
     }
 
+    protected void collectImports() {
+        collectJavaFilePartImports(copyrightPart.getImports());
+        collectJavaFilePartImports(packagePart.getImports());
+        collectJavaFilePartImports(importsPart.getImports());
+        collectJavaFilePartImports(extendsPart.getImports());
+        collectJavaFilePartImports(implementsPart.getImports());
+        collectJavaFilePartImports(fieldsPart.getImports());
+        collectJavaFilePartImports(constructorsPart.getImports());
+        collectJavaFilePartImports(abstractMethodsPart.getImports());
+        collectJavaFilePartImports(methodsPart.getImports());
+    }
+
     @Override
-    public String build() {
-        return null;
+    public void addField(JavaFieldPart fieldPart) {
+        fieldsPart.addParts(fieldPart);
+    }
+
+    @Override
+    public void removeField(JavaFieldPart fieldPart) {
+        fieldsPart.getFieldParts().remove(fieldPart);
+    }
+
+    @Override
+    public void addAbstractMethod(JavaAbstractMethodPart abstractMethodPart) {
+        if (isAbstract == IsAbstract.DEFAULT) {
+            throw new UnsupportedOperationException("Cannot Add abstract class from a normal class.");
+        }
+        abstractMethodsPart.addParts(abstractMethodPart);
+    }
+
+    @Override
+    public void removeAbstractMethod(JavaAbstractMethodPart abstractMethodPart) {
+        abstractMethodsPart.getAbstractMethodParts().remove(abstractMethodPart);
+    }
+
+    @Override
+    public void addConstructor(JavaConstructorPart constructorPart) {
+        constructorsPart.addParts(constructorPart);
+    }
+
+    @Override
+    public void removeConstructor(JavaConstructorPart constructorPart) {
+        constructorsPart.getConstructorParts().remove(constructorPart);
+    }
+
+    @Override
+    public void addMethod(JavaMethodPart methodPart) {
+        methodsPart.addParts(methodPart);
+    }
+
+    @Override
+    public void removeMethod(JavaMethodPart methodPart) {
+        methodsPart.getMethodParts().remove(methodPart);
     }
 }
 

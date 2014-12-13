@@ -33,7 +33,6 @@ public abstract class DirectoryElement<E extends Element> extends AbstractElemen
     }
 
 
-
     @Override
     public File getCurrentDirectory() {
         Containable parent = getParent();
@@ -43,7 +42,7 @@ public abstract class DirectoryElement<E extends Element> extends AbstractElemen
 
     @Override
     public void addSubElement(E... elements) {
-        if(elements != null) {
+        if (elements != null) {
             subElements.addAll(Arrays.asList(elements));
         }
 

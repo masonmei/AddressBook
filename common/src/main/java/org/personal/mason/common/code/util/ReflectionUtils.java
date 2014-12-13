@@ -1,9 +1,8 @@
 package org.personal.mason.common.code.util;
 
-import org.axonframework.common.*;
-
 import java.lang.reflect.*;
 import java.security.AccessController;
+import java.security.PrivilegedAction;
 import java.util.*;
 
 /**
@@ -56,7 +55,7 @@ public abstract class ReflectionUtils {
     }
 
 
-    public static Iterable<Field> fieldsOf(Class<?> clazz){
+    public static Iterable<Field> fieldsOf(Class<?> clazz) {
         return fieldsOf(clazz, false);
     }
 
@@ -72,7 +71,7 @@ public abstract class ReflectionUtils {
         Class<?> currentClazz = clazz;
         do {
             fields.addAll(Arrays.asList(currentClazz.getDeclaredFields()));
-            if(recursive) {
+            if (recursive) {
                 currentClazz = currentClazz.getSuperclass();
             } else {
                 currentClazz = null;
@@ -88,7 +87,6 @@ public abstract class ReflectionUtils {
      * @param field  The field containing the value
      * @param object The object to retrieve the field's value from
      * @return the value of the <code>field</code> in the <code>object</code>
-     *
      * @throws IllegalStateException if the field is not accessible and the security manager doesn't allow it to be
      *                               made
      *                               accessible
@@ -108,13 +106,18 @@ public abstract class ReflectionUtils {
      * @param member The member (field, method, constructor, etc) to make accessible
      * @param <T>    The type of member to make accessible
      * @return the given <code>member</code>, for easier method chaining
-     *
      * @throws IllegalStateException if the member is not accessible and the security manager doesn't allow it to be
      *                               made accessible
      */
-    public static <T extends AccessibleObject> T ensureAccessible(T member) {
+    public static <T extends AccessibleObject> T ensureAccessible(final T member) {
         if (!isAccessible(member)) {
-            AccessController.doPrivileged(new MemberAccessibilityCallback(member));
+            AccessController.doPrivileged(new PrivilegedAction() {
+                @Override
+                public Object run() {
+                    member.setAccessible(true);
+                    return Void.class;
+                }
+            });
         }
         return member;
     }
@@ -136,7 +139,6 @@ public abstract class ReflectionUtils {
      *
      * @param member The member to check
      * @return <code>true</code> if the member is public and non-final, otherwise <code>false</code>.
-     *
      * @see #isAccessible(java.lang.reflect.AccessibleObject)
      * @see #ensureAccessible(java.lang.reflect.AccessibleObject)
      */
@@ -154,13 +156,27 @@ public abstract class ReflectionUtils {
      * @throws IllegalArgumentException will be thrown instead of returning null if no wrapper class was found.
      */
     public static Class<?> resolvePrimitiveWrapperType(Class<?> primitiveType) {
-        org.axonframework.common.Assert.notNull(primitiveType, "primitiveType may not be null");
-        org.axonframework.common.Assert.isTrue(primitiveType.isPrimitive(), "primitiveType is not actually primitive: " + primitiveType);
+        Assert.notNull(primitiveType, "primitiveType may not be null");
+        Assert.isTrue(primitiveType.isPrimitive(), "primitiveType is not actually primitive: " + primitiveType);
 
         Class<?> primitiveWrapperType = primitiveWrapperTypeMap.get(primitiveType);
-        org.axonframework.common.Assert.notNull(primitiveWrapperType, "no wrapper found for primitiveType: " + primitiveType);
+        Assert.notNull(primitiveWrapperType, "no wrapper found for primitiveType: " + primitiveType);
         return primitiveWrapperType;
 
+    }
+
+    /**
+     * Return whether the Primitive Wrapper Type Map contain the given type.
+     *
+     * @param type
+     * @return
+     */
+    public static boolean isInPrimitiveWrapperType(Class<?> type) {
+        return primitiveWrapperTypeMap.containsValue(type);
+    }
+
+    public static boolean isEnum(Class<?> type) {
+        return type.isEnum();
     }
 
     private static void addMethodsOnDeclaredInterfaces(Class<?> currentClazz, List<Method> methods) {

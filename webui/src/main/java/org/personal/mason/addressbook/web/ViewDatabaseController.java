@@ -29,7 +29,7 @@ public class ViewDatabaseController {
     @RequestMapping("/claimed")
     public String claimedNames(Model model) {
         @SuppressWarnings({"JpaQlInspection"})
-        List<ClaimedContactName> claimedContactNames = entityManager.createQuery("select c from ClaimedContactName c").getResultList();
+        List<ClaimedContactName> claimedContactNames = entityManager.createQuery("select c.* from ClaimedContactName c").getResultList();
 
         model.addAttribute("claimedNames", claimedContactNames);
         return "db/claimed";
@@ -37,7 +37,7 @@ public class ViewDatabaseController {
 
     @RequestMapping("/events")
     public String events(Model model) {
-        Query nativeQuery = entityManager.createQuery("FROM DomainEventEntry e");
+        Query nativeQuery = entityManager.createQuery("select e.* FROM DomainEventEntry e");
         List<Object[]> events = nativeQuery.getResultList();
         for (Object[] event : events) {
             event[5] = new String((byte[]) event[5], Charset.forName("UTF-8"));

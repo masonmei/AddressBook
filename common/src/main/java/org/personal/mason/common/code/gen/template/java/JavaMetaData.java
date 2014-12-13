@@ -33,8 +33,7 @@ public class JavaMetaData extends MetaData {
 
     public String visitPrivilege() {
         VisitPrivilege privilege = (VisitPrivilege) get(VISIT_PRIVILEGE);
-        if(privilege == VisitPrivilege.DEFAULT)
-        {
+        if (privilege == VisitPrivilege.DEFAULT) {
             return EMPTY_STRING;
         }
         return privilege.name().toLowerCase();
@@ -42,7 +41,7 @@ public class JavaMetaData extends MetaData {
 
     public String isStatic() {
         IsStatic isStatic = (IsStatic) get(IS_STATIC);
-        if(isStatic == IsStatic.DEFAULT){
+        if (isStatic == IsStatic.DEFAULT) {
             return EMPTY_STRING;
         }
         return isStatic.name().toLowerCase();
@@ -50,7 +49,7 @@ public class JavaMetaData extends MetaData {
 
     public String isFinal() {
         IsFinal isFinal = (IsFinal) get(IS_FINAL);
-        if(isFinal == IsFinal.DEFAULT){
+        if (isFinal == IsFinal.DEFAULT) {
             return EMPTY_STRING;
         }
         return isFinal.name().toLowerCase();
@@ -58,15 +57,15 @@ public class JavaMetaData extends MetaData {
 
     public String comment() {
         Object comment = get(COMMENT);
-        if(comment == null) {
+        if (comment == null) {
             return EMPTY_STRING;
         }
-        return (String)comment;
+        return (String) comment;
     }
 
     public String fieldType() {
         Object fieldType = get(FIELD_TYPE);
-        if(fieldType == null) {
+        if (fieldType == null) {
             return VOID;
         }
         return (String) fieldType;
@@ -74,7 +73,7 @@ public class JavaMetaData extends MetaData {
 
     public String fieldName() {
         Object fieldName = get(FIELD_NAME);
-        if(fieldName == null) {
+        if (fieldName == null) {
             throw new IllegalStateException("Field name must not be null");
         }
         return (String) fieldName;

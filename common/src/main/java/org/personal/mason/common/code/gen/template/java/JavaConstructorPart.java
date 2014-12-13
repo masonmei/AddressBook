@@ -3,12 +3,15 @@ package org.personal.mason.common.code.gen.template.java;
 import org.personal.mason.common.code.gen.template.java.enums.VisitPrivilege;
 import org.personal.mason.common.code.util.Assert;
 
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * Created by m00290368 on 2014-12-02.
  */
 public class JavaConstructorPart extends AbstractJavaFilePart {
 
-    private final JavaImportsPart importsPart;
     private final String comment;
     private final VisitPrivilege visitPrivilege;
     private final String constructorName;
@@ -17,19 +20,18 @@ public class JavaConstructorPart extends AbstractJavaFilePart {
     private final JavaMethodLogicalPart logicalPart;
 
     public JavaConstructorPart(String comment, VisitPrivilege visitPrivilege, String constructorName) {
-        this(new JavaImportsPart(), comment, visitPrivilege, constructorName, new JavaMethodParamsPart(),
-                new JavaThrowsPart(), JavaMethodLogicalBuilder.createBuilder().build());
+        this(comment, visitPrivilege, constructorName, new JavaMethodParamsPart(), new JavaThrowsPart(),
+                JavaMethodLogicalBuilder.createBuilder().build());
     }
 
-    public JavaConstructorPart(JavaImportsPart importsPart, String comment, VisitPrivilege visitPrivilege,
-                               String constructorName, JavaMethodParamsPart methodParamsPart, JavaThrowsPart throwsPart,
+    public JavaConstructorPart(String comment, VisitPrivilege visitPrivilege, String constructorName,
+                               JavaMethodParamsPart methodParamsPart, JavaThrowsPart throwsPart,
                                JavaMethodLogicalPart logicalPart) {
-        Assert.notNull(importsPart, "Java Imports Part must not be null.");
         Assert.hasLength(constructorName, "Constructor Name must have length.");
         Assert.notNull(methodParamsPart, "Java Method Params Part must not be null.");
         Assert.notNull(throwsPart, "Java Throws Part must not be null.");
         Assert.notNull(logicalPart, "Java Method Logical Part must not be null.");
-        this.importsPart = importsPart;
+
         if (comment == null) {
             comment = "";
         }
@@ -43,10 +45,6 @@ public class JavaConstructorPart extends AbstractJavaFilePart {
         this.methodParamsPart = methodParamsPart;
         this.throwsPart = throwsPart;
         this.logicalPart = logicalPart;
-    }
-
-    public JavaImportsPart getImportsPart() {
-        return importsPart;
     }
 
     public String getComment() {
@@ -74,7 +72,33 @@ public class JavaConstructorPart extends AbstractJavaFilePart {
     }
 
     @Override
-    public String build() {
-        return null;
+    public Set<JavaImportPart> getImports() {
+        Set<JavaImportPart> imports = new HashSet<JavaImportPart>();
+        imports.addAll(methodParamsPart.getImports());
+        imports.addAll(throwsPart.getImports());
+        imports.addAll(logicalPart.getImports());
+        return Collections.unmodifiableSet(imports);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof JavaConstructorPart)) return false;
+
+        JavaConstructorPart that = (JavaConstructorPart) o;
+
+        if (constructorName != null ? !constructorName.equals(that.constructorName) : that.constructorName != null)
+            return false;
+        if (methodParamsPart != null ? !methodParamsPart.equals(that.methodParamsPart) : that.methodParamsPart != null)
+            return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = constructorName != null ? constructorName.hashCode() : 0;
+        result = 31 * result + (methodParamsPart != null ? methodParamsPart.hashCode() : 0);
+        return result;
     }
 }

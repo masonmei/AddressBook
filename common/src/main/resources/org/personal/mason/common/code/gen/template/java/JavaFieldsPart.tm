@@ -1,4 +1,3 @@
-#JavaImportPart#
 
 ##Each##
 #JavaFieldPart#

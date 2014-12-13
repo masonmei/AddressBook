@@ -5,7 +5,7 @@ package org.personal.mason.common.code.gen.template.java;
  */
 public abstract class JavaPartFactory {
 
-    public static CopyrightPart getCopyrightPart(){
+    public static CopyrightPart getCopyrightPart() {
 
         return null;
     }

@@ -5,7 +5,7 @@ import java.util.Iterator;
 /**
  * Created by m00290368 on 2014-12-05.
  */
-public interface JavaMultiplePart<T> {
+public interface JavaMultiplePart<T extends AbstractJavaFilePart> {
 
     /**
      * Get all the element parts iterator.

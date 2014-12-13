@@ -34,7 +34,7 @@ public abstract class AbstractGenerator implements Generator {
             next.construct();
         }
 
-        if(structure instanceof MultipleModuleStructure){
+        if (structure instanceof MultipleModuleStructure) {
             MultipleModuleStructure multipleModuleStructure = (MultipleModuleStructure) structure;
             Iterator<ModuleStructure> modules = multipleModuleStructure.getModuleStructures();
             while (modules.hasNext()) {

@@ -1,5 +1,4 @@
 #CopyrightPart#
-
 #JavaPackagePart#
 
 #JavaImportsPart#
@@ -7,11 +6,11 @@
 ##comment
 ##visitPrivilege enum ##className {
 
-    #JavaEnumElementsPart#
+#JavaEnumElementsPart#
 
-    #JavaFieldsPart#
+#JavaFieldsPart#
 
-    #JavaConstructorsPart#
+#JavaConstructorsPart#
 
-    #JavaMethodsPart#
+#JavaMethodsPart#
 }

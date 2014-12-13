@@ -37,12 +37,7 @@ public class CopyrightPart extends AbstractJavaFilePart {
     }
 
     @Override
-    public String build() {
-        return null;
-    }
-
-    @Override
-    public Set<String> getImports() {
+    public Set<JavaImportPart> getImports() {
         return Collections.emptySet();
     }
 }
