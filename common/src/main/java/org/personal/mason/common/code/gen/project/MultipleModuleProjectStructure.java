@@ -11,17 +11,13 @@ import java.util.Set;
 /**
  * Created by m00290368 on 2014-11-27.
  */
-public abstract class AbstractMultipleModuleProjectStructure<T> extends AbstractProjectStructure<T> implements MultipleModuleStructure {
+public class MultipleModuleProjectStructure<T> extends AbstractProjectStructure<T> implements MultipleModuleStructure {
 
     private final Set<ModuleStructure> moduleStructures;
 
-    public AbstractMultipleModuleProjectStructure(String name, String description, File path, Set<ModuleStructure> moduleStructures) {
+    public MultipleModuleProjectStructure(String name, String description, File path) {
         super(name, description, path);
-        if (moduleStructures == null) {
-            this.moduleStructures = new HashSet<>();
-        } else {
-            this.moduleStructures = moduleStructures;
-        }
+        this.moduleStructures = new HashSet<ModuleStructure>();
     }
 
     @Override

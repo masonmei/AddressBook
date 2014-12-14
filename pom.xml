@@ -11,6 +11,7 @@
         <module>common</module>
         <module>app</module>
         <module>webui</module>
+        <module>codegen</module>
     </modules>
     <packaging>pom</packaging>
 

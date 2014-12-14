@@ -16,7 +16,6 @@
 
 package org.personal.mason.addressbook.app.command;
 
-import org.axonframework.domain.IdentifierFactory;
 import org.personal.mason.addressbook.app.model.ContactId;
 import org.springframework.util.Assert;
 

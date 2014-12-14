@@ -47,39 +47,4 @@ public class ModuleGenerator extends AbstractGenerator {
         return structure;
     }
 
-
-    //    @Override
-//    public void generate() {
-//            Assert.notNull(moduleStructure, "Module Structure Must not be null.");
-//            Assert.hasLength(moduleStructure.getName(), "Project Name Must has length.");
-//            Assert.notNull(parentStructure.getPath(), "Project Path Must not be null.");
-//            Assert.pathExist(parentStructure.getPath(), "Project Path Must be existed.");
-//
-//            validateBasePath(projectStructure.getPath());
-//            logger.debug("Starting to generate the project with name {} at {}.", projectStructure.getName(), projectStructure.getPath());
-//
-//            try {
-//                String basePath = projectStructure.getPath().getCanonicalPath();
-//                basePath += File.pathSeparator + projectStructure.getName();
-//                File projectRoot = new File(basePath);
-//                if(projectRoot.exists()) {
-//                    throw new IllegalStateException("Project root path must be empty.");
-//                }
-//
-//                projectRoot.mkdir();
-//            } catch (IOException e) {
-//                logger.debug("Cannot resolve the canonical path of {}.", projectStructure.getPath());
-//                throw new IllegalStateException("Unknown runtime exception occurred while starting generate project.");
-//            }
-//
-//            Iterator<StructureElement> structureElements = projectStructure.getStructureElements();
-//            while (structureElements.hasNext()) {
-//                structureElements.next().construct();
-//            }
-//
-//            Iterator<Module> modules = projectStructure.getModuleStructures();
-//            while (modules.hasNext()){
-//                new ModuleGenerator(modules.next(), projectStructure).generate();
-//            }
-//    }
 }
