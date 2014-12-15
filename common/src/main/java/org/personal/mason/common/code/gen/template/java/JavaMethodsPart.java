@@ -11,6 +11,10 @@ public class JavaMethodsPart extends AbstractJavaFilePart implements JavaMultipl
 
     private final List<JavaMethodPart> methodParts = new ArrayList<JavaMethodPart>();
 
+    public JavaMethodsPart() {
+        this(new ArrayList<JavaMethodPart>());
+    }
+
     public JavaMethodsPart(List<JavaMethodPart> methodParts) {
         Assert.notNull(methodParts, "Java Method Parts must not be null.");
         addParts(methodParts.toArray(new JavaMethodPart[methodParts.size()]));

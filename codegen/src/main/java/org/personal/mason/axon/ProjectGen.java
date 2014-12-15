@@ -21,7 +21,10 @@ public class ProjectGen {
     private String baseDirectory;
     private String basePackage;
 
-    public ProjectGen getInstance() {
+    private ProjectGen() {
+    }
+
+    public static ProjectGen getInstance() {
         return new ProjectGen();
     }
 

@@ -10,6 +10,10 @@ import java.util.*;
 public class JavaFieldsPart extends AbstractJavaFilePart implements JavaMultiplePart<JavaFieldPart> {
     private final List<JavaFieldPart> fieldParts = new ArrayList<JavaFieldPart>();
 
+    public JavaFieldsPart() {
+        this(new ArrayList<JavaFieldPart>());
+    }
+
     public JavaFieldsPart(List<JavaFieldPart> fieldParts) {
         Assert.notNull(fieldParts, "Java Field Parts must not be null.");
         addParts(fieldParts.toArray(new JavaFieldPart[fieldParts.size()]));

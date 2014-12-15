@@ -1,5 +1,6 @@
 package org.personal.mason.common.code.util;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,5 +64,12 @@ public abstract class StringUtils {
             result.add(lastSection(string, "\\."));
         }
         return result;
+    }
+
+    public static String packageToPath(String packageName) {
+        if (packageName == null) {
+            packageName = "";
+        }
+        return packageName.replaceAll("\\.", "\\" + File.separator);
     }
 }
